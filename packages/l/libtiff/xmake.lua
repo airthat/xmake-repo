@@ -11,7 +11,7 @@ package("libtiff")
 
     add_deps("zlib")
     add_deps("cmake")
-
+ 
     on_install("windows", "mingw", "macosx", "linux", "bsd", function (package)
         local configs = {"-Dzstd=OFF", "-Dlzma=OFF", "-Dwebp=OFF", "-Djpeg=OFF", "-Djbig=OFF", "-Dpixarlog=OFF"}
         table.insert(configs, "-DCMAKE_BUILD_TYPE=" .. (package:debug() and "Debug" or "Release"))

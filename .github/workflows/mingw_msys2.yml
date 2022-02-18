@@ -24,7 +24,7 @@ jobs:
       - uses: msys2/setup-msys2@v2
         with:
           msystem: ${{ matrix.msystem }}
-          install: git base-devel unzip p7zip mingw-w64-${{ matrix.arch }}-toolchain
+          install: git base-devel unzip p7zip mingw-w64-${{ matrix.arch }}-toolchain mingw-w64-${{ matrix.arch }}-ninja mingw-w64-${{ matrix.arch }}-cmake
           update: true
 
       - name: Prepare
@@ -42,6 +42,10 @@ jobs:
       - name: Tests
         shell: msys2 {0}
         run: |
+          git clone --depth=1 https://gitlab.com/libtiff/libtiff.git
+          cd libtiff
+          cmake -B build -S .
+          ninja -C build
           if [ "${{ matrix.arch }}" == "x86_64" ]; then
             xmake l ./scripts/test.lua -vD -p mingw -a x86_64 -k ${{ matrix.kind }} "libtiff master"
           else
